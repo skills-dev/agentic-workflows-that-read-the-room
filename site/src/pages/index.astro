@@ -3,6 +3,73 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import mona from '../../assets/mona.png';
 import copilot from '../../assets/copilot.png';
 import ducky from '../../assets/ducky.png';
+import githubInfoMarkdown from '../../content/github-info.md?raw';
+
+function toPlainText(value) {
+  return value
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[`*_]/g, '')
+    .trim();
+}
+
+function getMarkdownSections(markdown) {
+  const sections = [];
+  let currentSection;
+
+  for (const line of markdown.split('\n')) {
+    if (line.startsWith('## ')) {
+      if (currentSection) {
+        sections.push(currentSection);
+      }
+
+      currentSection = {
+        title: toPlainText(line.replace(/^##\s+/, '')),
+        lines: [],
+      };
+
+      continue;
+    }
+
+    if (currentSection && !line.startsWith('# ')) {
+      currentSection.lines.push(line);
+    }
+  }
+
+  if (currentSection) {
+    sections.push(currentSection);
+  }
+
+  return sections;
+}
+
+const contentUpdates = getMarkdownSections(githubInfoMarkdown).map((section) => {
+  const paragraphs = [];
+  const bullets = [];
+
+  for (const line of section.lines) {
+    const trimmedLine = line.trim();
+
+    if (!trimmedLine) {
+      continue;
+    }
+
+    if (trimmedLine.startsWith('- ')) {
+      bullets.push(toPlainText(trimmedLine.replace(/^-\s+/, '')));
+      continue;
+    }
+
+    paragraphs.push(toPlainText(trimmedLine));
+  }
+
+  return {
+    type: 'From github-info.md',
+    date: 'Repository content',
+    title: section.title,
+    summary: paragraphs[0] ?? bullets.join(' '),
+    href: '#content-sources',
+    bullets,
+  };
+}).filter((update) => update.summary);
 
 const latestRelease = {
   eyebrow: 'Latest release highlight',
@@ -47,6 +114,8 @@ const recentUpdates = [
     href: 'https://github.blog/2026-03-19-rethinking-open-source-mentorship-in-the-ai-era/',
   },
 ];
+
+const homepageUpdates = [...contentUpdates, ...recentUpdates];
 
 const sourceGroups = [
   {
@@ -131,8 +200,8 @@ const highlights = [
             <span>featured release headline</span>
           </article>
           <article>
-            <strong>4</strong>
-            <span>recent blog and changelog stories</span>
+            <strong>{homepageUpdates.length}</strong>
+            <span>content-backed update cards</span>
           </article>
           <article>
             <strong>3</strong>
@@ -186,15 +255,15 @@ const highlights = [
     <section class="updates" id="recent-updates">
       <div class="section-heading">
         <span class="eyebrow">Newest information first</span>
-        <h2>Recent blog stories and changelog updates</h2>
+        <h2>Repository notes, blog stories, and changelog updates</h2>
         <p>
-          Mona now surfaces the latest GitHub movement near the top so the homepage feels current the moment a
-          reader lands on it.
+          Mona now surfaces updates from <code>site/content/github-info.md</code> alongside curated GitHub Blog and
+          Changelog stories, so the homepage changes when the repository content changes.
         </p>
       </div>
 
       <div class="updates-grid">
-        {recentUpdates.map((update) => (
+        {homepageUpdates.map((update) => (
           <article class="update-card">
             <span class:list={["pill", update.type === 'GitHub Changelog' ? 'pill--gold' : 'pill--violet']}>
               {update.type}
@@ -202,7 +271,20 @@ const highlights = [
             <p class="update-card__date">{update.date}</p>
             <h3>{update.title}</h3>
             <p>{update.summary}</p>
-            <a href={update.href} target="_blank" rel="noreferrer">Read official source</a>
+            {update.bullets?.length > 0 && (
+              <ul>
+                {update.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            )}
+            <a
+              href={update.href}
+              target={update.href.startsWith('#') ? undefined : '_blank'}
+              rel={update.href.startsWith('#') ? undefined : 'noreferrer'}
+            >
+              {update.href.startsWith('#') ? 'Review repository content' : 'Read official source'}
+            </a>
           </article>
         ))}
       </div>
@@ -236,7 +318,7 @@ const highlights = [
       </div>
     </section>
 
-    <section class="story-grid" id="sources">
+    <section class="story-grid" id="content-sources">
       <div class="section-heading">
         <span class="eyebrow">Reference shelf</span>
         <h2>GitHub docs for deeper context</h2>
