@@ -19,7 +19,9 @@ The workflow uses `safe-outputs: create-pull-request`, so the agent can draft we
 
    If you need to check, go to **Settings** > **Secrets and variables** > **Actions** in your copied exercise repository. You should see `COPILOT_GITHUB_TOKEN` listed as a repository secret.
 
-2. Use agent mode in the Copilot Chat panel to update Mona's updater `.github/workflows/update-github-info.md`.
+2. Use **agent-workflows** agent in the Copilot Chat panel to update Mona's updater `.github/workflows/update-github-info.md`.
+
+   <img width="30%" alt="agentic workflows Agent" src="../images/agentic-workflows-agent.png" />
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
