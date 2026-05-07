@@ -64,6 +64,7 @@ jobs:
         with:
           text-file: .github/workflows/update-github-info.md
           keyphrase: "awesome-copilot.github.com"
+          case-sensitive: false
 
       - name: Check compiled workflow exists
         id: check-lock-file
