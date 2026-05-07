@@ -52,11 +52,11 @@ The workflow uses `safe-outputs: create-pull-request`, so the agent can draft we
 
 5. In the GitHub UI merge the pull request, then open the **Actions** tab, select the `update-github-info` workflow, and choose **Run workflow**.
 
-   <img width="50%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-1.png" />
+   <img width="30%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-1.png" />
 
-   <img width="50%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-2.png" />
+   <img width="30%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-2.png" />
 
-   <img width="50%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-3.png" />
+   <img width="50%" height="50%" alt="Run the update-github-info workflow" src="../images/run-update-github-info-3.png" />
 
 5. Wait for the workflow to create a pull request for Mona's website update.
 
