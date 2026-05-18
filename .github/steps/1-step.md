@@ -34,9 +34,11 @@ Let's start in the pre-configured Codespace for this exercise. The dev container
 
 5. In the terminal that opened in the editor, run the official standalone installer to install or update the GitHub agentic workflows CLI extension.
 
-   ```bash
-   curl -fsSL https://raw.githubusercontent.com/github/gh-aw/main/install-gh-aw.sh | bash
-   ```
+   > ![Static Badge](https://img.shields.io/badge/Terminal-text?logo=gnometerminal&labelColor=0969da&color=ddf4ff)
+   >
+   > ```bash
+   > curl -fsSL https://raw.githubusercontent.com/github/gh-aw/main/install-gh-aw.sh | bash
+   > ```
 
    This standalone installer is the easiest path in Codespaces because it does not depend on interactive `gh extension install` authentication.
 

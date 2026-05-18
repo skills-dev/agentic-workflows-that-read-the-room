@@ -4,14 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SITE_DIR="$ROOT_DIR/site"
 
-echo "[postCreate] Installing sandbox dependencies for agentic workflows..."
-if command -v apt-get >/dev/null 2>&1; then
-  sudo apt-get update
-  sudo apt-get install -y bubblewrap socat
-fi
-
 echo "[postCreate] Installing GitHub Copilot CLI..."
 npm install -g @github/copilot
+copilot --version
 
 echo "[postCreate] Installing Mona Astro site dependencies..."
 cd "$SITE_DIR"
